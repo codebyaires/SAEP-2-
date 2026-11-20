@@ -1,33 +1,36 @@
 <?php
 session_start();
-require_once __DIR__ . '/conexao.php';
+require_once 'conexao.php';
 
 $sucesso = "";
 $erro = "";
 
-if (isset($_GET["excluir"])) {
-    try {
-        $st = $pdo->prepare("DELETE FROM produto WHERE id_produto = ?");
-        $st->execute([$_GET["excluir"]]);
+if (isset($_SESSION['usuario_id']) && $_SESSION['usuario_id'] == "admin") {
+    if (isset($_GET["excluir"])) {
+        try {
+            $st = $pdo->prepare("DELETE FROM produto WHERE id_produto = ?");
+            $st->execute([$_GET["excluir"]]);
 
-        if ($st->rowCount() > 0) {
-            $sucesso = "Produto removido com sucesso!";
-        } else {
-            $erro = "Não foi possível encontrar o produto!";
-        }
-    } catch (PDOException $e) {
-        if ($e->errorInfo[1] == 1451) {       // código MySQL: registro possui dependentes (FK)
-            $erro = "Este produto possui movimentações e não pode ser removido.";
-        } else {
-            throw $e;
+            if ($st->rowCount() > 0) {
+                $sucesso = "Produto removido com sucesso!";
+            } else {
+                $erro = "Não foi possível encontrar o produto!";
+            }
+        } catch (PDOException $e) {
+            if ($e->errorInfo[1] == 1451) {       // código MySQL: registro possui dependentes (FK)
+                $erro = "Este produto possui movimentações e não pode ser removido.";
+            } else {
+                throw $e;
+            }
         }
     }
+    if (isset($_GET["salvo"])) {
+        $sucesso = "Produto cadastrado com sucesso!";
+    }
+}else{
+    $erro = "Você não tem permissão para excluir produtos!";
 }
-if (isset($_GET["salvo"])) {
-    $sucesso = "Produto cadastrado com sucesso!";
-}
-
-require_once __DIR__ . '/includes/menu.php';
+require_once 'menu.php';
 
 $produtos = $pdo->query("SELECT * FROM produto ORDER BY nome")->fetchAll();
 ?>

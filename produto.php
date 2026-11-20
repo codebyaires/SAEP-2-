@@ -1,12 +1,12 @@
 <?php
 session_start();
-require_once __DIR__ . '/conexao.php';
+require_once 'conexao.php';
 
 $st = $pdo->prepare("SELECT * FROM produto WHERE id_produto = :id");
 $st->execute(["id" => $_GET["id"] ?? 0]);
 $produto = $st->fetch();          // false se não encontrou
 
-require_once __DIR__ . '/includes/menu.php';
+require_once 'menu.php';
 ?>
     <main class="flex-1 flex flex-col">
         <div class="bg-white border-b border-gray-200 px-6 py-4">

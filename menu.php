@@ -1,4 +1,8 @@
 <?php
+session_start();
+
+require_once 'conexao.php';
+
 $pagina = basename($_SERVER['PHP_SELF']);
 $ativo = function ($prefixo) use ($pagina) {
     return strpos($pagina, $prefixo) === 0 ? 'active' : '';
@@ -37,4 +41,6 @@ $ativo = function ($prefixo) use ($pagina) {
             <a href="movimentacoes.php" class="nav-link <?= $ativo('movimentac') ?>">🔄 Movimentações</a>
             <a href="saidas.php"        class="nav-link <?= $ativo('saidas') ?>">📤 Saídas</a>
         </nav>
+        <div class="px-4 py-5 border-t border-gray-700">
+            <a href="logout.php" class="nav-link text-red-500 hover:text-red-400">🚪 Sair</a>
     </aside>

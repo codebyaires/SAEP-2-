@@ -1,0 +1,7 @@
+Revisão do pacote SAEP
+
+Responsável indicado na documentação: Victor Gabriel.
+
+Os documentos plano_testes.docx e resultados.docx foram reescritos para tratar das funcionalidades do SAEP (estoque), em vez de empréstimos/devoluções de ferramentas. Os cenários são originais e os resultados permanecem como PENDENTES até execução real.
+
+ATENÇÃO: o código PHP e o SQL deste pacote ainda precisam de correções antes da entrega. A revisão identificou inconsistências entre os nomes de sessão usados no login e nas páginas, ausência de colunas de autenticação no SQL, falta de proteção global das páginas, seleção manual do responsável e ausência de transação/controle de concorrência na movimentação. Não considere este pacote validado para entrega final sem corrigir e testar esses pontos.

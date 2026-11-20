@@ -1,24 +1,28 @@
 <?php
 session_start();
-require_once __DIR__ . '/conexao.php';
+require_once 'conexao.php';
+
 
 $sucesso = "";
 $erro = "";
 
-if (isset($_GET["excluir"])) {
-    $st = $pdo->prepare("DELETE FROM movimentacao WHERE id_movimentacao = ?");
-    $st->execute([$_GET["excluir"]]);
-    if ($st->rowCount() > 0) {
-        $sucesso = "Movimentação removida com sucesso!";
-    } else {
-        $erro = "Não foi possível encontrar a movimentação!";
+if (isset($_SESSION['usuario_id']) && $_SESSION['usuario_id'] == "admin") {
+    if (isset($_GET["excluir"])) {
+        $st = $pdo->prepare("DELETE FROM movimentacao WHERE id_movimentacao = ?");
+        $st->execute([$_GET["excluir"]]);
+        if ($st->rowCount() > 0) {
+            $sucesso = "Movimentação removida com sucesso!";
+        } else {
+            $erro = "Não foi possível encontrar a movimentação!";
+        }
     }
+    if (isset($_GET["salvo"])) {
+        $sucesso = $_GET["salvo"] === "saida" ? "Saída executada com sucesso!" : "Entrada executada com sucesso!";
+    }
+}else{
+    $erro = "Você não tem permissão para excluir movimentações!";
 }
-if (isset($_GET["salvo"])) {
-    $sucesso = $_GET["salvo"] === "saida" ? "Saída executada com sucesso!" : "Entrada executada com sucesso!";
-}
-
-require_once __DIR__ . '/includes/menu.php';
+require_once 'menu.php';
 
 $sql = "SELECT m.*, p.nome AS produto, u.nome AS usuario
         FROM movimentacao m
